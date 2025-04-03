@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "An API that fetches the latest news articles from Dawn.com",
+        "description": "An API that fetches news articles from Dawn.com",
         "title": "Dawn News Web Scraper API",
         "contact": {
             "name": "Abdul Ali Khan"
@@ -24,7 +24,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "news"
+                    "News"
                 ],
                 "summary": "Return a news article by ID",
                 "parameters": [
@@ -46,6 +46,38 @@
                 }
             }
         },
+        "/date/{date}": {
+            "get": {
+                "description": "Fetches news articles published on a specific date (format: YYYY-MM-DD) in Pakistan",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "News"
+                ],
+                "summary": "Get news by date for Pakistan",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Date in YYYY-MM-DD format",
+                        "name": "date",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Article"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/latest-news/": {
             "get": {
                 "description": "List all latest news articles published on Dawn.com",
@@ -56,7 +88,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "news"
+                    "News"
                 ],
                 "summary": "Return a list of latest news articles",
                 "responses": {

@@ -15,7 +15,7 @@ import (
 // Get : Return a news article by ID
 // @Summary Return a news article by ID
 // @Description Return a news article by ID
-// @Tags news
+// @Tags News
 // @Accept  json
 // @Produce  json
 // @Param id path string true "id"
@@ -50,7 +50,11 @@ func FetchArticle(c *gin.Context) {
 	cly.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL.String())
 	})
-	cly.Visit("https://www.dawn.com/news/" + id)
+	
+	if err := cly.Visit("https://www.dawn.com/news/" + id); err != nil {
+		fmt.Printf("Error visiting article: %v\n", err)
+	}
+
 	enc := json.NewEncoder(os.Stdout)
 	enc.SetIndent("", "  ")
 

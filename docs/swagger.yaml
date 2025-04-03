@@ -26,7 +26,7 @@ host: localhost:3000
 info:
   contact:
     name: Abdul Ali Khan
-  description: An API that fetches the latest news articles from Dawn.com
+  description: An API that fetches news articles from Dawn.com
   license:
     name: Apache 2.0
   title: Dawn News Web Scraper API
@@ -52,7 +52,29 @@ paths:
             $ref: '#/definitions/models.Article'
       summary: Return a news article by ID
       tags:
-      - news
+      - News
+  /date/{date}:
+    get:
+      description: 'Fetches news articles published on a specific date (format: YYYY-MM-DD)
+        in Pakistan'
+      parameters:
+      - description: Date in YYYY-MM-DD format
+        in: path
+        name: date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Article'
+            type: array
+      summary: Get news by date for Pakistan
+      tags:
+      - News
   /latest-news/:
     get:
       consumes:
@@ -67,5 +89,5 @@ paths:
             $ref: '#/definitions/models.ArticleDetails'
       summary: Return a list of latest news articles
       tags:
-      - news
+      - News
 swagger: "2.0"

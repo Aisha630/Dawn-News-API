@@ -12,16 +12,22 @@ import (
 	"github.com/gocolly/colly/v2"
 )
 
-// List : Return a list of latest news articles
-// @Summary Return a list of latest news articles
-// @Description List all latest news articles published on Dawn.com
+// Get : Return news articles by Date for Pakistan
+// @Summary Get news by date for Pakistan
+// @Description Fetches news articles published on a specific date (format: YYYY-MM-DD) in Pakistan
 // @Tags News
-// @Accept  json
-// @Produce  json
-// @Success 200 {object} models.ArticleDetails
-// @Router /latest-news/ [get]
-func FetchLatestNews(c *gin.Context) {
+// @Produce json
+// @Param date path string true "Date in YYYY-MM-DD format"
+// @Success 200 {object} []models.Article
+// @Router /date/{date} [get]
+func FetchNewsOnDate(c *gin.Context) {
 	articles := make([]models.ArticleDetails, 0)
+
+	date := c.Param("date")
+	if date == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Date parameter is required"})
+		return
+	}
 
 	cly := colly.NewCollector(
 		colly.AllowedDomains("www.dawn.com", "dawn.com"),
@@ -48,7 +54,7 @@ func FetchLatestNews(c *gin.Context) {
 		fmt.Println("Visiting", r.URL.String())
 	})
 	
-	if err := cly.Visit("https://www.dawn.com/latest-news"); err != nil {
+	if err:= cly.Visit("https://www.dawn.com/pakistan/" + date); err != nil {
 		fmt.Printf("Error visiting URL: %v\n", err)
 	}
 
